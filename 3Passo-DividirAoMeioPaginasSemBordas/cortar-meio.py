@@ -20,7 +20,7 @@ OBS6: as imagens vão receber um novo nome, com o sufixo "_esquerda" ou "_direit
 from PIL import Image
 import os
 
-pasta_imagens = "sem-bordas-externas"
+pasta_imagens = "colunas"
 pasta_saida = "divididas-com-bordas-do-meio"
 
 os.makedirs(pasta_saida, exist_ok=True)
