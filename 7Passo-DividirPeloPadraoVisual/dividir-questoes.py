@@ -12,7 +12,7 @@ def converter_cor_gimp_para_rgb(gimp_r, gimp_g, gimp_b):
 
 def encontrar_faixa_azul(imagem, cor_alvo, tolerancia=15, altura_faixa=7):
     """
-    Encontra posições onde há uma faixa horizontal da cor especificada entre os pixels 14 e 368
+    Encontra posições onde há uma faixa horizontal da cor especificada entre os pixels 15 e 369 (com margem)
     """
     largura, altura = imagem.size
     pixels = imagem.load()
@@ -24,9 +24,9 @@ def encontrar_faixa_azul(imagem, cor_alvo, tolerancia=15, altura_faixa=7):
     while y < altura - altura_faixa:
         faixa_encontrada = True
         
-        # Verifica a faixa verticalmente (com margem de altura de 3px -> 4 a 10px) e horizontalmente (14 a 368 com margem de 3px -> 11 a 371)
+        # Verifica a faixa verticalmente (altura 7) e horizontalmente (15 a 369 com margem de 5px -> 10 a 374)
         for dy in range(altura_faixa):
-            for x in range(11, 372):
+            for x in range(15, 360):
                 if x >= largura:
                     continue
                 pixel = pixels[x, y + dy] 
@@ -46,8 +46,8 @@ def encontrar_faixa_azul(imagem, cor_alvo, tolerancia=15, altura_faixa=7):
                 break
         
         if faixa_encontrada:
-            # Corta 66 pixels ANTES de começar o padrão
-            posicao_corte = y - 66  
+            # Corta 65 pixels ANTES de começar o padrão
+            posicao_corte = y - 65  
             if posicao_corte < 0:  # Evitar posições negativas
                 posicao_corte = 0
                 
@@ -90,7 +90,7 @@ def dividir_imagem_por_faixas(caminho_imagem, pasta_saida, cor_alvo):
         if posicao_corte <= posicao_anterior:
             continue
             
-        # Corta a seção (do início anterior até a posição de corte, mantendo os 66px no início da próxima)
+        # Corta a seção (do início anterior até a posição de corte, mantendo os 65px no início da próxima)
         area_corte = (0, posicao_anterior, largura, posicao_corte)
         secao = imagem.crop(area_corte)
         
@@ -100,7 +100,7 @@ def dividir_imagem_por_faixas(caminho_imagem, pasta_saida, cor_alvo):
         secao.save(caminho_completo)
         print(f"Salvo: {caminho_completo} ({secao.width}x{secao.height}px)")
         
-        # A próxima seção começa exatamente em posicao_corte (incluindo os 66 pixels antes do padrão)
+        # A próxima seção começa exatamente em posicao_corte (incluindo os 65 pixels antes do padrão)
         posicao_anterior = posicao_corte 
     
     # Corta a seção final (após a última faixa)
@@ -114,12 +114,12 @@ def dividir_imagem_por_faixas(caminho_imagem, pasta_saida, cor_alvo):
         print(f"Salvo: {caminho_completo} ({secao.width}x{secao.height}px)")
 
 if __name__ == "__main__":
-    caminho_imagem = "NOME-DA-SUA-IMAGEM.png"  # Substitua pelo caminho da sua imagem
-    pasta_saida = "NOME-PASTA-SAIDA" # Substitua pelo nome da pasta de saída desejada
+    caminho_imagem = "inteiras_concatenadas_verticalmente.png"  # Substitua pelo caminho da sua imagem
+    pasta_saida = "questoes" # Substitua pelo nome da pasta de saída desejada
 
     # Cor RGB (119, 119, 119) informada
     cor_do_padrao = (119, 119, 119)
-    print(f"Cor definida: RGB{cor_do_padrao}")
+    print(f"Cor definida: RGB {cor_do_padrao}")
     
     # Executa a divisão
     dividir_imagem_por_faixas(caminho_imagem, pasta_saida, cor_do_padrao)
